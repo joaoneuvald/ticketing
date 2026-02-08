@@ -4,6 +4,7 @@ namespace App\Handlers;
 
 use App\Domain\Contracts\Auth\Authenticatable;
 use App\Domain\DTOs\Auth\Token;
+use App\Domain\Enums\Auth\Role;
 use App\Domain\Enums\Auth\Type;
 use App\Domain\Exceptions\AppException;
 use App\Domain\Services\JWTService;
@@ -29,6 +30,7 @@ class JWTHandler implements JWTService
             'iat' => $now->getTimestamp(),
             'exp' => $expiration?->getTimestamp(),
             'mrf' => $maxRefresh?->getTimestamp(),
+            'role' => $authenticatable->getRole(),
         ];
 
         $jwt = $this->encode($payload);
@@ -37,6 +39,7 @@ class JWTHandler implements JWTService
             $jwt,
             $authenticatable->getId(),
             $authenticatable->getEmail(),
+            $authenticatable->getRole(),
             $type,
             $expiration,
             $maxRefresh
@@ -76,6 +79,7 @@ class JWTHandler implements JWTService
             $jwt,
             $token->getAuthenticatableId(),
             $token->getEmail(),
+            $token->getRole(),
             $token->getType(),
             $expiration,
             $token->getMaxRefresh()
@@ -90,7 +94,8 @@ class JWTHandler implements JWTService
             $token,
             $payload['sub'],
             $payload['email'],
-            Type::from($payload['typ']),
+            Role::tryFrom($payload['role']),
+            Type::tryFrom($payload['typ']),
             isset($payload['exp']) ? new DateTimeImmutable('@'.$payload['exp']) : null,
             isset($payload['mrf']) ? new DateTimeImmutable('@'.$payload['mrf']) : null
         );
