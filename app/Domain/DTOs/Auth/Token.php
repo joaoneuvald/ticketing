@@ -5,21 +5,27 @@ namespace App\Domain\DTOs\Auth;
 use App\Domain\Enums\Auth\Type;
 use DateTimeImmutable;
 
-class Token {
+class Token
+{
     private string $token;
+
     private string $authenticatableId;
+
     private string $email;
+
     private Type $type;
-    private DateTimeImmutable|null $expiration;
-    private DateTimeImmutable|null $maxRefresh;
+
+    private ?DateTimeImmutable $expiration;
+
+    private ?DateTimeImmutable $maxRefresh;
 
     public function __construct(
         string $token,
         string $authenticatableId,
         string $email,
         Type $type,
-        DateTimeImmutable|null $expiration,
-        DateTimeImmutable|null $maxRefresh
+        ?DateTimeImmutable $expiration,
+        ?DateTimeImmutable $maxRefresh
     ) {
         $this->token = $token;
         $this->authenticatableId = $authenticatableId;
@@ -29,7 +35,8 @@ class Token {
         $this->maxRefresh = $maxRefresh;
     }
 
-    public function getToken(): string {
+    public function getToken(): string
+    {
         return $this->token;
     }
 
@@ -38,19 +45,23 @@ class Token {
         return $this->authenticatableId;
     }
 
-    public function getEmail(): string {
+    public function getEmail(): string
+    {
         return $this->email;
     }
 
-    public function getType(): Type {
+    public function getType(): Type
+    {
         return $this->type;
     }
 
-    public function getExpiration(): DateTimeImmutable|null {
+    public function getExpiration(): ?DateTimeImmutable
+    {
         return $this->expiration;
     }
 
-    public function getMaxRefresh(): DateTimeImmutable|null {
+    public function getMaxRefresh(): ?DateTimeImmutable
+    {
         return $this->maxRefresh;
     }
 }

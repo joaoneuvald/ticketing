@@ -2,10 +2,10 @@
 
 namespace App\Domain\DTOs\User;
 
+use App\Domain\Contracts\Auth\Authenticatable;
 use App\Domain\Enums\Auth\Role;
-use App\Domain\Exceptions\AppException;
 
-class User
+class User implements Authenticatable
 {
     private ?string $id;
 
@@ -110,9 +110,11 @@ class User
         );
     }
 
-    public function withHashedPassword(string $password): static {
+    public function withHashedPassword(string $password): static
+    {
         $new = clone $this;
         $new->password = password_hash($password, PASSWORD_DEFAULT);
+
         return $new;
     }
 }
