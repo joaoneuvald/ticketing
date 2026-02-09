@@ -21,7 +21,7 @@ class RegisterUserAction
             throw new AppException('errors.user.invalidEmail', 500);
         }
 
-        $user = $user->withHashedPassword($user->getPassword());
+        $user = $user->withHashedPassword(password_hash($user->getPassword(), PASSWORD_DEFAULT));
 
         return $this->userRepository->register($user);
     }

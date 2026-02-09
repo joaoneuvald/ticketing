@@ -113,7 +113,7 @@ class User implements Authenticatable
     public function withHashedPassword(string $password): static
     {
         $new = clone $this;
-        $new->password = password_hash($password, PASSWORD_DEFAULT);
+        $new->password = $password;
 
         return $new;
     }

@@ -35,9 +35,11 @@ class ConfirmLoginAction
 
         $code = $this->codeRepository->retrieve($code, $authenticatable->getId(), CodeType::LOGIN_CONFIRMATION);
 
-        if (! $code && $code->getStatus() != Status::AVAILABLE) {
+        if (! $code && $code->getStatus() != Status::AVAILABLE && $code->getExpiration() < now()->toDateTimeImmutable()) {
             throw new AppException('errors.auth.invalidConfirmationCode', 500);
         }
+
+        $this->codeRepository->changeStatus($code->getId(), Status::USED);
 
         return $this->jwtService->generate($authenticatable, TokenType::ACCESS);
     }
