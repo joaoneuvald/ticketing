@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('tck_users', function (Blueprint $table) {
             $table->string('user_id')->primary();
-            $table->string('username')->index('idx_tck_users_usermame');
-            $table->string('email')->index('idx_tck_users_email');
+            $table->string('username')->unique()->index('idx_tck_users_usermame');
+            $table->string('email')->unique()->index('idx_tck_users_email');
             $table->string('name');
             $table->integer('role')->index('idx_tck_users_role');
             $table->boolean('blocked');
